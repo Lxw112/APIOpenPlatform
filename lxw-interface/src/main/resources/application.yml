@@ -1,0 +1,14 @@
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+lxwapi:
+  client:
+    access-key: ppp
+    secret-key: abcdefg
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lxwapi
+    username: root
+    password: 123456
