@@ -46,7 +46,7 @@ public class LxwApiClient {
 
     private Map<String,String> getHeaderMap(String body){
         Map<String,String> hashMap = new HashMap<>();
-        hashMap.put("accessKey","ppp");
+        hashMap.put("accessKey",accessKey);
         //一定不能直接发送
         //hashMap.put("secretKey","abcdefg");
         hashMap.put("nonce", RandomUtil.randomNumbers(4));
@@ -60,6 +60,8 @@ public class LxwApiClient {
         HttpResponse httpResponse = HttpRequest.post("http://localhost:8123/api/name/user")
                 .body(json)
                 .addHeaders(getHeaderMap(json))
+                .header("Content-Type", "application/json; charset=UTF-8") // 明确指定编码
+                .header("Accept-Charset", "UTF-8") // 确保服务器以 UTF-8 解析
                 .execute();
         System.out.println(httpResponse.getStatus());
         String body = httpResponse.body();

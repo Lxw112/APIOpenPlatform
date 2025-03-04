@@ -1,6 +1,7 @@
 package com.lxw.lxwinterface.controller;
 
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import com.lxw.lxwclientsdk.utils.SignUtils;
@@ -39,7 +40,7 @@ public class NameController {
         String nonce = request.getHeader("nonce");
         String timestampStr = request.getHeader("timestamp");
         String sign = request.getHeader("sign");
-        String body = request.getHeader("body");
+        //String body = request.getHeader("body");//因为会乱码，所以直接使用body（user）
         // todo 实际情况应该是去数据库中查是否已分配给用户
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(User::getAccessKey,accessKey);
@@ -61,7 +62,7 @@ public class NameController {
             throw new RuntimeException("无权限");
         }
         // todo 实际情况是从数据库中查出 secretKey
-        String serverSign = SignUtils.genSign(body, user1.getSecretKey());
+        String serverSign = SignUtils.genSign(JSONUtil.toJsonStr(user), user1.getSecretKey());
         if (!sign.equals(serverSign)){
             throw new RuntimeException("无权限");
         }

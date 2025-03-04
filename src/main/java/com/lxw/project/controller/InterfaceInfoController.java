@@ -1,13 +1,15 @@
 package com.lxw.project.controller;
+import com.google.gson.Gson;
+import com.lxw.lxwclientsdk.client.LxwApiClient;
+import com.lxw.lxwclientsdk.model.UserExample;
+import com.lxw.project.common.*;
+import com.lxw.project.model.dto.interfaceinfo.InterfaceInfoInvoke;
+import com.lxw.project.model.enums.InterfaceInfoStatusEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lxw.project.annotation.AuthCheck;
-import com.lxw.project.common.BaseResponse;
-import com.lxw.project.common.DeleteRequest;
-import com.lxw.project.common.ErrorCode;
-import com.lxw.project.common.ResultUtils;
 import com.lxw.project.constant.CommonConstant;
 import com.lxw.project.constant.UserConstant;
 import com.lxw.project.exception.BusinessException;
@@ -46,6 +48,8 @@ public class InterfaceInfoController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private LxwApiClient lxwApiClient;
     // region 增删改查
 
     /**
@@ -175,7 +179,6 @@ public class InterfaceInfoController {
      * @return
      */
     @GetMapping("/list/page")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<InterfaceInfo>> listInterfaceInfoByPage( InterfaceInfoQueryRequest interfaceInfoQueryRequest,HttpServletRequest request) {
         if (interfaceInfoQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -202,5 +205,105 @@ public class InterfaceInfoController {
     }
 
 
+
+
+
+
+    /**
+     * 发布
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                     HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <=0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 判断是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        //判断该接口是否可以调用(后续把固定方法名改为根据测试地址调用)
+        UserExample userExample = new UserExample();
+        userExample.setName("test");
+        String username = lxwApiClient.getNameByPost(userExample);
+        if (StringUtils.isBlank(username)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"接口验证失败");
+        }
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+
+
+    /**
+     * 下线
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                     HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <=0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 判断是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+
+    /**
+     * 测试调用
+     *
+     * @param interfaceInfoInvoke
+     * @param request
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInfoInvoke interfaceInfoInvoke,
+                                                     HttpServletRequest request) {
+        if (interfaceInfoInvoke == null || interfaceInfoInvoke.getId() <=0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 判断是否存在
+        long id = interfaceInfoInvoke.getId();
+        String userRequestParams = interfaceInfoInvoke.getUserRequestParams();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        if (oldInterfaceInfo.getStatus() == InterfaceInfoStatusEnum.OFFLINE.getValue()){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"接口已关闭");
+        }
+        User user = userService.getLoginUser(request);
+        String accessKey = user.getAccessKey();
+        String secretKey = user.getSecretKey();
+        LxwApiClient tempClient = new LxwApiClient(accessKey, secretKey);
+        Gson gson = new Gson();
+        UserExample userExample = gson.fromJson(userRequestParams, UserExample.class);
+        String nameByPost = tempClient.getNameByPost(userExample);
+        return ResultUtils.success(nameByPost);
+    }
 
 }

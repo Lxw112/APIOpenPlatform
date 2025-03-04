@@ -101,3 +101,7 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.lxw.project.controller
+lxwapi:
+  client:
+    access-key: ppp
+    secret-key: abcdefg
