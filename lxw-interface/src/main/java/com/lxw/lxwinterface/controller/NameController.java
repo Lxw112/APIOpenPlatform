@@ -25,12 +25,12 @@ public class NameController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("/get")
     public String getNameByGet(String name){
         return "Get 你的名字是" + name;
     }
 
-    @PostMapping("/")
+    @PostMapping("/post")
     public String getNameByPost(@RequestParam String name){
         return "POST 你的名字是" + name;
     }
@@ -54,7 +54,7 @@ public class NameController {
         // todo 需要验证时间和当前时间不能超过5分钟
         try {
             long timestamp = Long.parseLong(timestampStr); // 将字符串转换为 long 类型
-            long currentTime = System.currentTimeMillis(); // 获取当前时间戳
+            long currentTime = System.currentTimeMillis() / 1000; // 获取当前时间戳
             if (Math.abs(currentTime - timestamp) > 300_000){// 计算时间差是否小于等于 5 分钟
                 throw new RuntimeException("无权限");
             }

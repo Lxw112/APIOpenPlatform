@@ -20,6 +20,8 @@ public class LxwApiClient {
     private String accessKey;
     private String secretKey;
 
+    public static final String GATEWAY_HOST = "http://localhost:8090";
+
     public LxwApiClient(String accessKey, String secretKey) {
         this.accessKey = accessKey;
         this.secretKey = secretKey;
@@ -29,7 +31,7 @@ public class LxwApiClient {
         //可以单独传入http参数，这样参数会自动做URL编码，拼接在URL中
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        String result = HttpUtil.get("http://localhost:8123/api/name/", paramMap);
+        String result = HttpUtil.get(GATEWAY_HOST +"/api/name/", paramMap);
         System.out.println(result);
         return result;
     }
@@ -38,7 +40,7 @@ public class LxwApiClient {
     public String getNameByPost( String name) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        String result = HttpUtil.post("http://localhost:8123/api/name/", paramMap);
+        String result = HttpUtil.post(GATEWAY_HOST +"/api/name/", paramMap);
         System.out.println(result);
         return result;
     }
@@ -51,13 +53,13 @@ public class LxwApiClient {
         //hashMap.put("secretKey","abcdefg");
         hashMap.put("nonce", RandomUtil.randomNumbers(4));
         hashMap.put("body",body);
-        hashMap.put("timestamp",String.valueOf(System.currentTimeMillis()));
+        hashMap.put("timestamp",String.valueOf(System.currentTimeMillis() / 1000));
         hashMap.put("sign", SignUtils.genSign(body,secretKey));
         return hashMap;
     }
     public String getNameByPost( UserExample userExample) {
         String json = JSONUtil.toJsonStr(userExample);
-        HttpResponse httpResponse = HttpRequest.post("http://localhost:8123/api/name/user")
+        HttpResponse httpResponse = HttpRequest.post(GATEWAY_HOST + "/api/name/user")
                 .body(json)
                 .addHeaders(getHeaderMap(json))
                 .header("Content-Type", "application/json; charset=UTF-8") // 明确指定编码
