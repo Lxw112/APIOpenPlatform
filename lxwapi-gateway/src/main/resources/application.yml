@@ -14,3 +14,8 @@ logging:
       springframework:
         cloud:
           gateway: trace
+dubbo:
+  application:
+    name: dubbo-springboot-consumer
+  registry:
+    address: nacos://192.168.182.128:8848
