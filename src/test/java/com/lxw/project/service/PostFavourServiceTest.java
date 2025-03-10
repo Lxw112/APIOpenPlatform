@@ -2,11 +2,11 @@ package com.lxw.project.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.model.entity.Post;
-import com.lxw.project.model.entity.User;
+
 import javax.annotation.Resource;
 
-import com.lxw.project.service.PostFavourService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

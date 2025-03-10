@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import javax.annotation.Resource;
 
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.common.ErrorCode;
 import com.lxw.project.exception.BusinessException;
 import com.lxw.project.mapper.PostThumbMapper;
 import com.lxw.project.model.entity.Post;
 import com.lxw.project.model.entity.PostThumb;
-import com.lxw.project.model.entity.User;
 import com.lxw.project.service.PostService;
 import com.lxw.project.service.PostThumbService;
 import org.springframework.aop.framework.AopContext;

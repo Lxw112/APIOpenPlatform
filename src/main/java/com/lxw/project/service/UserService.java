@@ -1,9 +1,10 @@
 package com.lxw.project.service;
 
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.model.dto.user.UserQueryRequest;
-import com.lxw.project.model.entity.User;
 import com.lxw.project.model.vo.LoginUserVO;
 import com.lxw.project.model.vo.UserVO;
 import java.util.List;

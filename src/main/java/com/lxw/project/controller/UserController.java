@@ -1,6 +1,7 @@
 package com.lxw.project.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.annotation.AuthCheck;
 import com.lxw.project.common.BaseResponse;
 import com.lxw.project.common.DeleteRequest;
@@ -16,7 +17,6 @@ import com.lxw.project.model.dto.user.UserQueryRequest;
 import com.lxw.project.model.dto.user.UserRegisterRequest;
 import com.lxw.project.model.dto.user.UserUpdateMyRequest;
 import com.lxw.project.model.dto.user.UserUpdateRequest;
-import com.lxw.project.model.entity.User;
 import com.lxw.project.model.vo.LoginUserVO;
 import com.lxw.project.model.vo.UserVO;
 import com.lxw.project.service.UserService;

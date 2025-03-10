@@ -1,9 +1,9 @@
 package com.lxw.project.aop;
 
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.annotation.AuthCheck;
 import com.lxw.project.common.ErrorCode;
 import com.lxw.project.exception.BusinessException;
-import com.lxw.project.model.entity.User;
 import com.lxw.project.model.enums.UserRoleEnum;
 import com.lxw.project.service.UserService;
 import org.aspectj.lang.ProceedingJoinPoint;

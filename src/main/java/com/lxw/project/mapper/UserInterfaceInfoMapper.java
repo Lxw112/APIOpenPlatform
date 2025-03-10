@@ -2,7 +2,9 @@ package com.lxw.project.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lxw.project.model.entity.UserInterfaceInfo;
+import com.lxw.lxwapicommon.model.entity.UserInterfaceInfo;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -12,6 +14,7 @@ import com.lxw.project.model.entity.UserInterfaceInfo;
 */
 public interface UserInterfaceInfoMapper extends BaseMapper<UserInterfaceInfo> {
 
+    List<UserInterfaceInfo> listTopInvokeInterfaceInfo(int limit);
 }
 
 

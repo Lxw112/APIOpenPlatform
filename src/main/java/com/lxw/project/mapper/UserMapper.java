@@ -1,7 +1,7 @@
 package com.lxw.project.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lxw.project.model.entity.User;
+import com.lxw.lxwapicommon.model.entity.User;
 
 /**
  * 用户数据库操作

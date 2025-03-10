@@ -2,6 +2,7 @@ package com.lxw.project.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.annotation.AuthCheck;
 import com.lxw.project.common.BaseResponse;
 import com.lxw.project.common.DeleteRequest;
@@ -15,7 +16,6 @@ import com.lxw.project.model.dto.post.PostEditRequest;
 import com.lxw.project.model.dto.post.PostQueryRequest;
 import com.lxw.project.model.dto.post.PostUpdateRequest;
 import com.lxw.project.model.entity.Post;
-import com.lxw.project.model.entity.User;
 import com.lxw.project.model.vo.PostVO;
 import com.lxw.project.service.PostService;
 import com.lxw.project.service.UserService;

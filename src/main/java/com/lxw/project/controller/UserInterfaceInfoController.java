@@ -3,6 +3,8 @@ package com.lxw.project.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import com.lxw.lxwapicommon.model.entity.User;
+import com.lxw.lxwapicommon.model.entity.UserInterfaceInfo;
 import com.lxw.project.annotation.AuthCheck;
 import com.lxw.project.common.*;
 import com.lxw.project.constant.CommonConstant;
@@ -13,8 +15,6 @@ import com.lxw.project.exception.ThrowUtils;
 import com.lxw.project.model.dto.userInterfaceInfo.UserInterfaceInfoAddRequest;
 import com.lxw.project.model.dto.userInterfaceInfo.UserInterfaceInfoQueryRequest;
 import com.lxw.project.model.dto.userInterfaceInfo.UserInterfaceInfoUpdateRequest;
-import com.lxw.project.model.entity.UserInterfaceInfo;
-import com.lxw.project.model.entity.User;
 
 import com.lxw.project.service.UserInterfaceInfoService;
 import com.lxw.project.service.UserService;

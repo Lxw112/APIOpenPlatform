@@ -1,8 +1,8 @@
 package com.lxw.project.service;
 
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.model.entity.PostThumb;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lxw.project.model.entity.User;
 
 /**
  * 帖子点赞服务

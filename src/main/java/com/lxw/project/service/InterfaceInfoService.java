@@ -1,7 +1,7 @@
 package com.lxw.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lxw.project.model.entity.InterfaceInfo;
+import com.lxw.lxwapicommon.model.entity.InterfaceInfo;
 
 
 /**

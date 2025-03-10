@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.common.ErrorCode;
 import com.lxw.project.constant.CommonConstant;
 import com.lxw.project.exception.BusinessException;
 import com.lxw.project.mapper.UserMapper;
 import com.lxw.project.model.dto.user.UserQueryRequest;
-import com.lxw.project.model.entity.User;
 import com.lxw.project.model.enums.UserRoleEnum;
 import com.lxw.project.model.vo.LoginUserVO;
 import com.lxw.project.model.vo.UserVO;

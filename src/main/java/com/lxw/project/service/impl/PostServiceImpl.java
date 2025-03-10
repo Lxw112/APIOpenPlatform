@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.project.common.ErrorCode;
 import com.lxw.project.constant.CommonConstant;
 import com.lxw.project.exception.BusinessException;
@@ -25,7 +26,6 @@ import com.lxw.project.model.dto.post.PostQueryRequest;
 import com.lxw.project.model.entity.Post;
 import com.lxw.project.model.entity.PostFavour;
 import com.lxw.project.model.entity.PostThumb;
-import com.lxw.project.model.entity.User;
 import com.lxw.project.model.vo.PostVO;
 import com.lxw.project.model.vo.UserVO;
 import com.lxw.project.service.PostService;

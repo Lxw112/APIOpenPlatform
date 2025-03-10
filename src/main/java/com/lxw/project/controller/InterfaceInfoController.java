@@ -1,5 +1,7 @@
 package com.lxw.project.controller;
 import com.google.gson.Gson;
+import com.lxw.lxwapicommon.model.entity.InterfaceInfo;
+import com.lxw.lxwapicommon.model.entity.User;
 import com.lxw.lxwclientsdk.client.LxwApiClient;
 import com.lxw.lxwclientsdk.model.UserExample;
 import com.lxw.project.common.*;
@@ -11,15 +13,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lxw.project.annotation.AuthCheck;
 import com.lxw.project.constant.CommonConstant;
-import com.lxw.project.constant.UserConstant;
 import com.lxw.project.exception.BusinessException;
 import com.lxw.project.exception.ThrowUtils;
 
 import com.lxw.project.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.lxw.project.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.lxw.project.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
-import com.lxw.project.model.entity.InterfaceInfo;
-import com.lxw.project.model.entity.User;
 
 import com.lxw.project.service.InterfaceInfoService;
 import com.lxw.project.service.UserService;

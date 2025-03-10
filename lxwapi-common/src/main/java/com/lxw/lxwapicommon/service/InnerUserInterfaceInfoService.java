@@ -1,4 +1,5 @@
-package com.lxw.project.service;
+package com.lxw.lxwapicommon.service;
+
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lxw.lxwapicommon.model.entity.UserInterfaceInfo;
@@ -8,9 +9,7 @@ import com.lxw.lxwapicommon.model.entity.UserInterfaceInfo;
 * @description 针对表【user_interface_info(用户调用接口关系)】的数据库操作Service
 * @createDate 2025-03-05 14:51:59
 */
-public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
-
-    void validUserInterfaceInfo(UserInterfaceInfo userInterfaceInfo, boolean b);
+public interface InnerUserInterfaceInfoService{
 
     /**
      * 调用接口统计

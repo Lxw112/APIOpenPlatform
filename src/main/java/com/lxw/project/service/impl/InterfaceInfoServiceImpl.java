@@ -1,9 +1,9 @@
 package com.lxw.project.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lxw.lxwapicommon.model.entity.InterfaceInfo;
 import com.lxw.project.common.ErrorCode;
 import com.lxw.project.exception.BusinessException;
 import com.lxw.project.mapper.InterfaceInfoMapper;
-import com.lxw.project.model.entity.InterfaceInfo;
 import com.lxw.project.service.InterfaceInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
