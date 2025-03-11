@@ -56,4 +56,6 @@ public class AnalysisController {
         }).collect(Collectors.toList());
         return ResultUtils.success(interfaceVOList);
     }
+
+
 }

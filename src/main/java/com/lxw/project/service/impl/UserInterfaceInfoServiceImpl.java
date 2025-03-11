@@ -1,5 +1,6 @@
 package com.lxw.project.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -48,6 +49,24 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
         updateWrapper.gt("leftNum",0);
         updateWrapper.setSql("leftNum = leftNum - 1 , totalNum = totalNum + 1");
         return this.update(updateWrapper);
+    }
+
+    /**
+     * 判断是否还有调用次数
+     * @param interfaceInfoId
+     * @param userId
+     * @return
+     */
+    @Override
+    public int hasRemainingCalls(long interfaceInfoId, long userId) {
+        QueryWrapper<UserInterfaceInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("interfaceInfoId",interfaceInfoId)
+                .eq("userId",userId);
+        UserInterfaceInfo userInterfaceInfo = getOne(queryWrapper);
+        if (userInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        return userInterfaceInfo.getLeftNum();
     }
 
 }

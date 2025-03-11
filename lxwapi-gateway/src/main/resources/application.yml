@@ -6,8 +6,20 @@ spring:
       routes:
         - id: api_route
           uri: http://localhost:8123
+          order: -40
           predicates:
             - Path=/api/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                key-resolver: "#{@ipKeyResolver}"   # 关键：定义限流的 key（默认使用客户端 IP）
+                redis-rate-limiter.replenishRate: 1 # 每秒允许 10 个请求
+                redis-rate-limiter.burstCapacity: 2 # 最大突发容量 20
+  redis:
+    host: 192.168.182.128
+    port: 6379
+    database: 1
+    password: 123321
 logging:
   level:
     org:

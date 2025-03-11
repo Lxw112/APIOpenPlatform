@@ -9,6 +9,8 @@ import com.lxw.lxwclientsdk.model.UserExample;
 import com.lxw.lxwclientsdk.utils.SignUtils;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,18 +48,18 @@ public class LxwApiClient {
     }
 
 
-    private Map<String,String> getHeaderMap(String body){
+    private Map<String,String> getHeaderMap(String body) throws UnsupportedEncodingException {
         Map<String,String> hashMap = new HashMap<>();
         hashMap.put("accessKey",accessKey);
         //一定不能直接发送
         //hashMap.put("secretKey","abcdefg");
         hashMap.put("nonce", RandomUtil.randomNumbers(4));
-        hashMap.put("body",body);
+        hashMap.put("body", URLEncoder.encode(body,"utf-8"));
         hashMap.put("timestamp",String.valueOf(System.currentTimeMillis() / 1000));
         hashMap.put("sign", SignUtils.genSign(body,secretKey));
         return hashMap;
     }
-    public String getNameByPost( UserExample userExample) {
+    public String getNameByPost( UserExample userExample) throws UnsupportedEncodingException {
         String json = JSONUtil.toJsonStr(userExample);
         HttpResponse httpResponse = HttpRequest.post(GATEWAY_HOST + "/api/name/user")
                 .body(json)

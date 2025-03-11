@@ -18,4 +18,6 @@ public interface InnerUserInterfaceInfoService{
      * @return
      */
     boolean invokeCount(long interfaceInfoId,long userId);
+
+    int hasRemainingCalls(long interfaceInfoId,long userId);
 }

@@ -11,6 +11,8 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
@@ -18,6 +20,7 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
@@ -26,6 +29,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,7 +77,12 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         String nonce = headers.getFirst("nonce");
         String timestamp = headers.getFirst("timestamp");
         String sign = headers.getFirst("sign");
-        String body = headers.getFirst("body");
+        String body = null;
+        try {
+            body = URLDecoder.decode(headers.getFirst("body"),"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         User user = null;
         try {
             user = innerUserService.getInvokeUser(accessKey);
@@ -107,6 +117,10 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             return handleNoAuth(response);
         }
         //todo 判断是否有调用次数
+        int leftNum = innerUserInterfaceInfoService.hasRemainingCalls(interfaceInfo.getId(), user.getId());
+        if (leftNum == 0){
+            return handleInvokeError(response);
+        }
         //请求转发，调用模拟接口
         //Mono<Void> filter = chain.filter(exchange);
         //响应日志
@@ -198,7 +212,21 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         return response.setComplete();
     }
     public Mono<Void> handleInvokeError(ServerHttpResponse response ){
-        response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-        return response.setComplete();
+        response.setStatusCode(HttpStatus.FORBIDDEN); // 设置HTTP状态码 403
+        response.getHeaders().setContentType(MediaType.APPLICATION_JSON); // 设置响应类型为JSON
+
+        // 构造错误信息 JSON
+        String errorJson = "{\"code\": 403, \"message\": \"您对该接口的调用次数已耗尽\"}";
+
+        // 将 JSON 转为 DataBuffer
+        DataBuffer buffer = response.bufferFactory().wrap(errorJson.getBytes(StandardCharsets.UTF_8));
+
+        // 返回错误信息
+        return response.writeWith(Mono.just(buffer));
+    }
+
+    @Bean
+    public KeyResolver ipKeyResolver() {
+        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
     }
 }
